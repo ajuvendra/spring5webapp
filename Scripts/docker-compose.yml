@@ -9,7 +9,8 @@ services:
     environment:
       MYSQL_DATABASE: springwebapp
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
-      
+    volumes:
+      - db_data:/var/lib/mysql
 
   spring5webapp:
     image: ajuvendra/spring5webapp
@@ -26,3 +27,6 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+
+volumes:
+    db_data:
