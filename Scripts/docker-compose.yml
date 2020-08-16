@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  mysqldb:
+    image: mysql
+    restart: always
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_DATABASE: springwebapp
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      
+
+  spring5webapp:
+    image: ajuvendra/spring5webapp
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysqldb
+    environment:
+      SPRING_DATASOURCE_URL: 'jdbc:mysql://mysqldb:3306/springwebapp'
+      SPRING_PROFILES_ACTIVE: 'mysql'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
